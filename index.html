@@ -1,22 +1,167 @@
-<html>
-  <head>
-    <title>Hannah Lee</title>
-    <script>
-      async function copyText() {
-        try {
-          // 복사할 텍스트
-          const text = "01-2345-6789012-00";
-          await navigator.clipboard.writeText(text);
-          alert('은행 계좌가 복사되었습니다!');
-        } catch (err) {
-          console.error('복사 실패:', err);
+뉴질랜드 Westpac 은행 계좌 정보를 담은 페이지군요! 모바일과 웹에서 모두 깔끔하게 보이도록 카드 레이아웃 형태의 디자인을 적용해 보았습니다.
+
+사용자가 계좌 번호를 누를 때 단순히 알림(alert)만 뜨는 것이 아니라, 시각적으로도 '복사됨'을 느낄 수 있도록 효과를 추가했습니다.
+스타일이 적용된 HTML/CSS
+
+아래 코드를 그대로 복사해서 사용하시면 됩니다.
+HTML
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hannah Lee - Bank Account</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
         }
-      }
+
+        body {
+            background-color: #f4f7f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 카드 컨테이너 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 이름 스타일 */
+        h1 {
+            font-size: 1.2rem;
+            color: #888;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* 은행 이름 스타일 (Westpac Red) */
+        .bank-name {
+            font-size: 2rem;
+            color: #da291c; /* Westpac 로고색 반영 */
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        /* 계좌번호 박스 */
+        .account-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            padding: 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .account-box:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .account-box:active {
+            transform: scale(0.98);
+        }
+
+        .account-number {
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: 700;
+            word-break: break-all;
+            display: block;
+        }
+
+        .copy-hint {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* 하단 안내 문구 */
+        .footer-text {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* 복사 완료 토스트 알림 스타일 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Hannah Lee</h1>
+        <div class="bank-name">WESTPAC</div>
+        
+        <div class="account-box" onclick="copyText()">
+            <span class="account-number" id="accountNum">01-2345-6789012-00</span>
+            <span class="copy-hint">터치하여 계좌번호 복사</span>
+        </div>
+
+        <p class="footer-text">감사합니다!</p>
+    </div>
+
+    <div id="toast" class="toast">계좌번호가 복사되었습니다!</div>
+
+    <script>
+        async function copyText() {
+            const text = document.getElementById('accountNum').innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+                
+                // 토스트 알림 표시
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+
+            } catch (err) {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다. 직접 복사해 주세요.');
+            }
+        }
     </script>
-  </head>
-  <body>
-    <h1>Bank Account</h1>
-    <h2>WESTPAC</h2>
-    <h2><a href=# onclick="copyText()">01-2345-6789012-00</a></h2>
-  </body>
+
+</body>
 </html>
