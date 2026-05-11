@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Hannah Lee</title>
+    <script>
+      async function copyText() {
+        try {
+          // 복사할 텍스트
+          const text = "01-2345-6789012-00";
+          await navigator.clipboard.writeText(text);
+          alert('텍스트가 복사되었습니다!');
+        } catch (err) {
+          console.error('복사 실패:', err);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Bank Account</h1>
+    <h2>WESTPAD</h2>
+    <h2><a href=# onclick="copyText()">01-2345-6789012-00</a></h2>
+  </body>
+</html>
